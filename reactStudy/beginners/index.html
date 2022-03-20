@@ -14,7 +14,9 @@
         function App() {
             const [counter, setCounter] = React.useState(0);
             const onClick = () => {
-                setCounter(counter + 1);
+                // setCounter(counter + 1);
+                setCounter(current => current + 1);
+                // 정확한 이전의 값을 가져와서 계산
             };
             return (
                 <div>
