@@ -6,12 +6,12 @@
     <body>
         <div id="root"></div>
     </body>
-    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-        function Btn({ text, changeValue }) {
-            console.log(text + "was rendered");
+        function Btn({ fontSize = 14, text, changeValue }) {
             return (
                 <button
                     onClick={changeValue}
@@ -20,7 +20,8 @@
                         color: "#fff",
                         border: 0,
                         borderRadius: 5,
-                        padding: "10px 20px"
+                        padding: "10px 20px",
+                        fontSize
                     }}
                 >
                     {text}
@@ -29,13 +30,19 @@
         }
         // re-render 되지 않아도 되는 component는 re-render되지 않게 해준다.
         const MemorizedBtn = React.memo(Btn);
+        // porp의 type을 정해줄 수 있다.
+        // .isRequired 반드시 값이 있어야 할 경우 추가
+        Btn.propTypes = {
+            text: PropTypes.string.isRequired,
+            fontSize: PropTypes.number
+        };
         function App() {
             const [value, setValue] = React.useState("Save Changes");
             const changeValue = () => setValue("Revert Changes");
             // Component 에는 eventListener X 모든 것은 props로 들어감
             return (
                 <div>
-                    <MemorizedBtn text={value} changeValue={changeValue} />
+                    <MemorizedBtn fontSize={18} text={value} changeValue={changeValue} />
                     <MemorizedBtn text="Confirm" />
                 </div>
             );
